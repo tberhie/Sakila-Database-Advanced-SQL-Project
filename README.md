@@ -29,3 +29,24 @@ In this project, I worked on a series of advanced SQL queries to manipulate and 
 - SQL (MySQL)
 - MySQL Workbench
 - Sakila Database
+
+## Example Queries: 
+1. ### Query to List Actors who Acted in More than 25 Movies:
+```
+SELECT a.first_name, a.last_name, COUNT(fa.film_id) AS movie_count
+FROM actor a
+JOIN film_actor fa ON a.actor_id = fa.actor_id
+GROUP BY a.actor_id
+HAVING movie_count > 25;
+```
+2. ### Inserting a New Movie "Data Hero" starring Adam Grant into a View:
+```
+INSERT INTO film (title, language_id, rental_duration, rental_rate, replacement_cost)
+VALUES ('Data Hero', 1, 7, 4.99, 19.99);
+
+INSERT INTO film_actor (actor_id, film_id) 
+VALUES ((SELECT actor_id FROM actor WHERE first_name = 'ADAM' AND last_name = 'GRANT'), LAST_INSERT_ID());
+
+INSERT INTO film_category (film_id, category_id) 
+VALUES (LAST_INSERT_ID(), (SELECT category_id FROM category WHERE name = 'Sci-Fi'));
+```
